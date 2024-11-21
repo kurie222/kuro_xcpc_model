@@ -4,4 +4,4 @@
 
 This models are written by me or collected by me from Internet.
 
-This models is prepared for ICPC.
+This models is only prepared for ICPC.
