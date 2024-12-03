@@ -1,8 +1,7 @@
-struct Suffix_Automaton
+struct Suffix_Automaton//注意！广义SAM需要在每次插入新串前将last置为1！！！
 {
     static const int N = 2000005, MAXS = 30;
     int tot = 1, ru[N], link[N], maxlen[N], endpos[N], ch[N][MAXS], last = 1;
-    queue<int> Q;
     // endpos[x]: |endpos[x]| 即节点x的endpos大小
     Suffix_Automaton() { tot = 1; }
     void insert(int w)
@@ -13,8 +12,8 @@ struct Suffix_Automaton
             if (maxlen[p] + 1 == maxlen[x])
             {
                 endpos[x] = 1;
-                last=x;
-                return ;
+                last = x;
+                return;
             }
             else
             {
@@ -26,7 +25,7 @@ struct Suffix_Automaton
                     ch[p][w] = y, p = link[p];
                 link[y] = link[x], link[x] = y;
                 endpos[y] = 1;
-                last=y;
+                last = y;
                 return;
             }
         }
@@ -53,23 +52,53 @@ struct Suffix_Automaton
             }
         }
         endpos[z] = 1;
-        last=z;
+        last = z;
         return;
     }
-    void get_endpos()
+    vector<int> p[N]; // 建立parent树，以便从上到下dfs
+    void dfs(int u)
     {
-        for (int i = 2; i <= tot; ++i)
-            ++ru[link[i]];
-        for (int i = 1; i <= tot; ++i)
-            if (!ru[i])
-                Q.push(i);
-        while (!Q.empty())
+        int v;
+        for (int i = 0; i < p[u].size(); i++)
         {
-            int x = Q.front();
-            Q.pop();
-            endpos[link[x]] += endpos[x];
-            if (!(--ru[link[x]]))
-                Q.push(link[x]);
+            v = p[u][i];
+            dfs(v);
+            endpos[u] += endpos[v];
         }
     }
+
+    // 注意！在使用该方法前，endpos[]代表每个点作为“终结点”的次数
+    // 使用该方法后，endpos[]指在串中出现总次数，即原数组的子树求和
+    void get_endpos()
+    {
+        for (int i = 1; i <= tot; i++)
+            p[i].clear();
+        for (int i = 2; i <= tot; i++)
+        {
+            p[link[i]].push_back(i); // 建立parent树，以便从上到下dfs
+        }
+        dfs(1);
+        for (int i = 1; i <= tot; i++)
+            p[i].clear();
+    }
+    /*
+    下面是原版广义SAM的get_endpos(),常数是上面的vector版的1/2,但本人不太会这个版本。
+    */
+    //  queue<int> Q;
+    //  void get_endpos()
+    //  {
+    //      for (int i = 2; i <= tot; ++i)
+    //          ++ru[link[i]];
+    //      for (int i = 1; i <= tot; ++i)
+    //          if (!ru[i])
+    //              Q.push(i);
+    //      while (!Q.empty())
+    //      {
+    //          int x = Q.front();
+    //          Q.pop();
+    //          endpos[link[x]] += endpos[x];
+    //          if (!(--ru[link[x]]))
+    //              Q.push(link[x]);
+    //      }
+    //  }
 } sam;
