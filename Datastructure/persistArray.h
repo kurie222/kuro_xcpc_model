@@ -1,4 +1,25 @@
-//常数极大，非必要情况让队友写
+
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+#define rt return
+#define pi pair<int, int>
+#define pl pair<ll, ll>
+#define pu pair<ull, ull>
+// #define int long long
+#define ll long long
+#define ull unsigned long long
+#define endl '\n'
+#define Endl endl
+#define all(x) x.begin(), x.end()
+#define all1(x) next(x.begin()), x.end()
+#define lll __int128_t
+#define ulll __uint128_t
+using namespace std;
+const int64_t maxn = 1e5 + 50;
+const int64_t mod = 998244353;
+const int64_t maxl = (int64_t)(2e18) + 5;
+const int64_t maxi = 1e9 + 7;
 int idxx = 2;
 struct segment_tree_node_lazytag
 {
@@ -42,16 +63,10 @@ struct presist_segment_tree
             idxx++;
             build(l, mid, a, tree[idx].ls);
             tree[idx].rs = idxx;
-            
             idxx++;
             build(mid + 1, r, a, tree[idx].rs);
             pushup(idx);
         }
-    }
-
-    void pushdown(int idx)
-    {
-        
     }
     ll find_sum(int l, int r, int idx)
     {
@@ -59,34 +74,8 @@ struct presist_segment_tree
             return 0;
         if (tree[idx].l >= l && tree[idx].r <= r)
             return tree[idx].val;
-        pushdown(idx);
-        pushup(idx);
         return find_sum(l, r, tree[idx].ls) + find_sum(l, r, tree[idx].rs);
     }
-    int add(int l, int r, int add_val, int idx)
-    {
-        if (tree[idx].l > r || tree[idx].r < l)
-            return idx;
-        if (tree[idx].l >= l && tree[idx].r <= r)
-        {
-            int tidx = idxx++;
-            
-
-            tree[tidx] = tree[idx];
-            tree[idx].val += add_val * tree[idx].length;
-            swap(tree[idx], tree[tidx]);
-            return tidx;
-        }
-        pushdown(idx);
-        int tidx = idxx++;
-        
-        tree[tidx] = tree[idx];
-        tree[tidx].ls = add(l, r, add_val, tree[idx].ls);
-        tree[tidx].rs = add(l, r, add_val, tree[idx].rs);
-        pushup(idx);
-        pushup(tidx);
-        return tidx;
-    } // 区间加上x
     int set(int l, int val, int idx)
     {
         if (tree[idx].l > l || tree[idx].r < l)
@@ -94,20 +83,15 @@ struct presist_segment_tree
         if (tree[idx].l == l && tree[idx].r == l)
         {
             int tidx = idxx++;
-            
             tree[tidx] = tree[idx];
             tree[idx].val = val;
             swap(tree[idx], tree[tidx]);
             return tidx;
         }
-        pushdown(idx);
         int tidx = idxx++;
-        
-
         tree[tidx] = tree[idx];
         tree[tidx].ls = set(l, val, tree[idx].ls);
         tree[tidx].rs = set(l, val, tree[idx].rs);
-        pushup(idx);
         pushup(tidx);
         return tidx;
     }
