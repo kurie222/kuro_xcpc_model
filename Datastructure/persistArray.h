@@ -1,26 +1,4 @@
-
-#include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-#define rt return
-#define pi pair<int, int>
-#define pl pair<ll, ll>
-#define pu pair<ull, ull>
-// #define int long long
-#define ll long long
-#define ull unsigned long long
-#define endl '\n'
-#define Endl endl
-#define all(x) x.begin(), x.end()
-#define all1(x) next(x.begin()), x.end()
-#define lll __int128_t
-#define ulll __uint128_t
-using namespace std;
-const int64_t maxn = 1e5 + 50;
-const int64_t mod = 998244353;
-const int64_t maxl = (int64_t)(2e18) + 5;
-const int64_t maxi = 1e9 + 7;
-int idxx = 2;
+//常数极大，非必要情况让队友写
 struct segment_tree_node_lazytag
 {
     long long add;
