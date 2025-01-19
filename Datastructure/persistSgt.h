@@ -1,4 +1,5 @@
-//常数极大，非必要情况让队友写
+vector<int> root(maxn + 1);
+int idxx = 2;
 struct segment_tree_node_lazytag
 {
     long long add;
@@ -15,7 +16,7 @@ struct presist_segment_tree
     std::vector<segment_tree_node> tree;
     presist_segment_tree(int max_size)
     {
-        tree.resize((25)*max_size);
+        tree.resize((25) * max_size);
     }
     void pushup(int idx)
     {
@@ -37,7 +38,7 @@ struct presist_segment_tree
         {
             int mid = (l + r) >> 1;
             tree[idx].ls = idxx;
-            
+
             idxx++;
             build(l, mid, a, tree[idx].ls);
             tree[idx].rs = idxx;
@@ -72,5 +73,25 @@ struct presist_segment_tree
         tree[tidx].rs = set(l, val, tree[idx].rs);
         pushup(tidx);
         return tidx;
+    }
+    int kthmax(int l, int r,int k)
+    {
+        return __kthmax(root[l-1],root[r],k);
+    }
+    int __kthmax(int idx1, int idx2,int k)
+    {
+        int ls1=tree[idx1].ls,ls2=tree[idx2].ls,rs1=tree[idx1].rs,rs2=tree[idx2].rs;
+        if(tree[idx1].l==tree[idx1].r)
+        {
+            return tree[idx1].l;
+        }
+        if(tree[ls2].val-tree[ls1].val>=k)
+        {
+            return __kthmax(ls1,ls2,k);
+        }
+        else
+        {
+            return __kthmax(rs1,rs2,k-(tree[ls2].val-tree[ls1].val));
+        }
     }
 };
