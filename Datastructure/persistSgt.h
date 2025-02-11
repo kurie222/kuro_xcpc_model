@@ -16,7 +16,8 @@ struct presist_segment_tree
     std::vector<segment_tree_node> tree;
     presist_segment_tree(int max_size)
     {
-        tree.resize((25) * max_size);
+        tree.resize((50) * max_size);
+        idxx = 2;
     }
     void pushup(int idx)
     {
@@ -74,24 +75,24 @@ struct presist_segment_tree
         pushup(tidx);
         return tidx;
     }
-    int kthmax(int l, int r,int k)
+    int kthmax(int l, int r, int k)
     {
-        return __kthmax(root[l-1],root[r],k);
+        return __kthmax(root[l - 1], root[r], k);
     }
-    int __kthmax(int idx1, int idx2,int k)
+    int __kthmax(int idx1, int idx2, int k)
     {
-        int ls1=tree[idx1].ls,ls2=tree[idx2].ls,rs1=tree[idx1].rs,rs2=tree[idx2].rs;
-        if(tree[idx1].l==tree[idx1].r)
+        int ls1 = tree[idx1].ls, ls2 = tree[idx2].ls, rs1 = tree[idx1].rs, rs2 = tree[idx2].rs;
+        if (tree[idx1].l == tree[idx1].r)
         {
             return tree[idx1].l;
         }
-        if(tree[ls2].val-tree[ls1].val>=k)
+        if (tree[ls2].val - tree[ls1].val >= k)
         {
-            return __kthmax(ls1,ls2,k);
+            return __kthmax(ls1, ls2, k);
         }
         else
         {
-            return __kthmax(rs1,rs2,k-(tree[ls2].val-tree[ls1].val));
+            return __kthmax(rs1, rs2, k - (tree[ls2].val - tree[ls1].val));
         }
     }
 };
