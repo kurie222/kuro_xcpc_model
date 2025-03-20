@@ -52,7 +52,27 @@ struct segment_tree
             pushup(idx);
         }
     }
-
+    void build(int l, int r, int idx = 1)
+    {
+        tree[idx].l = l;
+        tree[idx].r = r;
+        tree[idx].length = r - l + 1;
+        if (l == r)
+        {
+            tree[idx].val = 0;
+            tree[idx].length = 1;
+            tree[idx].l = tree[idx].r = l;
+            tree[idx].min = 0;
+            tree[idx].minidx = l;
+        }
+        else
+        {
+            int mid = (l + r) >> 1;
+            build(l, mid, idx * 2);
+            build(mid + 1, r, idx * 2 + 1);
+            pushup(idx);
+        }
+    }
     void pushdown(int idx)
     {
         tree[idx * 2].tag.add += tree[idx].tag.add;
@@ -71,19 +91,21 @@ struct segment_tree
             return tree[idx].val;
         pushdown(idx);
         pushup(idx);
-        return find_sum(l,r,idx*2)+find_sum(l,r,idx*2+1);
+        return find_sum(l, r, idx * 2) + find_sum(l, r, idx * 2 + 1);
     }
-    pair<ll,ll> find_min(int l, int r, int idx = 1)//minvalue minidx
+    pair<ll, ll> find_min(int l, int r, int idx = 1) // minvalue minidx
     {
         if (tree[idx].l > r || tree[idx].r < l)
-            return {INT64_MAX,-1};
+            return {INT64_MAX, -1};
         if (tree[idx].l >= l && tree[idx].r <= r)
-            return {tree[idx].min,tree[idx].minidx};
+            return {tree[idx].min, tree[idx].minidx};
         pushdown(idx);
         pushup(idx);
-        auto a=find_min(l, r, idx * 2), b=find_min(l, r, idx * 2 + 1);
-        if(a.first<=b.first) rt a;
-        else rt b;
+        auto a = find_min(l, r, idx * 2), b = find_min(l, r, idx * 2 + 1);
+        if (a.first <= b.first)
+            rt a;
+        else
+            rt b;
     }
     void add(int l, int r, int add_val, int idx = 1)
     {
