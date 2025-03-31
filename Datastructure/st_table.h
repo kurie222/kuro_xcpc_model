@@ -1,37 +1,41 @@
-int LOG2[maxn];
-int st_table_init_tag = 0;
-vector<int> a(maxn);
-int st_table[maxn][30];
-template <typename T>
-T op(T a, T b)
+class st_table
 {
-    return std::max(a, b);
-}
-void st_table_init()
-{
-
-    LOG2[0] = 0;
-    for (int i = 1; i <= maxn; i++)
-        LOG2[i] = log2(i);
-    st_table_init_tag = 1;
-}
-void build()
-{
-    if (!st_table_init_tag)
-        st_table_init();
-    for(int i=0;i<=n;i++)
-    st_table[i][0]=a[i];
-    for (int j = 1; j <= LOG2[n]; j++)
-        for (int i = 1; i + (1 << (j - 1)) <= n + 1; i++)
+public:
+    st_table(vector<int> &a)
+    {
+        siz = a.size() - 1; // 1-index
+        LOG2.resize(siz + 1);
+        table.resize(siz + 1);
+        for (int i = 0; i <= siz; i++)
         {
-            st_table[i][j] = op(st_table[i][j - 1], st_table[i + (1 << (j - 1))][j - 1]);
-            // op[i,i+2^j-1]
+            table[i].resize(30);
         }
-}
-int srh(int l, int r)
-{
-    if (l == r)
-        return st_table[l][0];
-    int tp = (LOG2[r - l + 1]);
-    return op(st_table[l][tp], st_table[r + 1 - (1 << tp)][tp]);
-}
+        for (int i = 0; i <= siz; i++)
+            table[i][0] = a[i];
+        for (int i = 2; i <= siz; i++)
+            LOG2[i] = LOG2[i / 2]+1;
+        for (int j = 1; j <= LOG2[siz]; j++)
+            for (int i = 1; i + (1 << (j - 1)) <= siz; i++)
+            {
+                table[i][j] = op(table[i][j - 1], table[i + (1 << (j - 1))][j - 1]);
+                // op[i,i+2^j-1]
+            }
+    }
+    int ask(int l, int r)
+    {
+        assert(l >= 1 && r <= siz && l <= r);
+        if (l == r)
+            return table[l][0];
+        int tp = (LOG2[r - l + 1]);
+        return op(table[l][tp], table[r + 1 - (1 << tp)][tp]);
+    }
+
+private:
+    int siz;
+    vector<int> LOG2;
+    vector<vector<int>> table;
+    int op(int a, int b)
+    {
+        return std::max(a, b);
+    }
+};
