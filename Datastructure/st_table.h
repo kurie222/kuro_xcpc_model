@@ -5,19 +5,19 @@ public:
     {
         siz = a.size() - 1; // 1-index
         LOG2.resize(siz + 1);
-        table.resize(siz + 1);
-        for (int i = 0; i <= siz; i++)
+        table.resize(24);
+        for (int i = 0; i <24; i++)
         {
-            table[i].resize(30);
+            table[i].resize(siz+1);
         }
         for (int i = 0; i <= siz; i++)
-            table[i][0] = a[i];
+            table[0][i] = a[i];
         for (int i = 2; i <= siz; i++)
-            LOG2[i] = LOG2[i / 2]+1;
+            LOG2[i] = LOG2[i / 2] + 1;
         for (int j = 1; j <= LOG2[siz]; j++)
             for (int i = 1; i + (1 << (j - 1)) <= siz; i++)
             {
-                table[i][j] = op(table[i][j - 1], table[i + (1 << (j - 1))][j - 1]);
+                table[j][i] = op(table[j - 1][i], table[j-1][i + (1 << (j - 1))]);
                 // op[i,i+2^j-1]
             }
     }
@@ -25,9 +25,9 @@ public:
     {
         assert(l >= 1 && r <= siz && l <= r);
         if (l == r)
-            return table[l][0];
+            return table[0][l];
         int tp = (LOG2[r - l + 1]);
-        return op(table[l][tp], table[r + 1 - (1 << tp)][tp]);
+        return op(table[tp][l], table[tp][r + 1 - (1 << tp)]);
     }
 
 private:
@@ -36,6 +36,6 @@ private:
     vector<vector<int>> table;
     int op(int a, int b)
     {
-        return std::max(a, b);
+        return std::gcd(a, b);
     }
 };
