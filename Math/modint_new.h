@@ -14,7 +14,7 @@ struct modint {
     constexpr modint() : x{} {}
     constexpr modint(long long x) : x{norm(x % getMod())} {}
     
-    static long long Mod;
+    inline static long long Mod=998244353;
     constexpr static long long getMod() {
         if (P > 0) {
             return P;
@@ -102,3 +102,4 @@ struct modint {
     }
 };
 using mint=modint<998244353>;
+//如果需要使用setmod，传0进入模版即可
