@@ -323,7 +323,7 @@ public:
         init();
         return sgt.find_sum(dfn[x], dfn[x] + siz[x] - 1);
     }
-    inline void addRange(int x, int y, int add_val)
+    inline void rangeAdd(int x, int y, int add_val)
     {
         init();
         add_val %= mod;
@@ -339,7 +339,7 @@ public:
         sgt.add(dfn[x], dfn[y], add_val);
     }
 
-    void addSon(int x, int add_val)
+    void sonAdd(int x, int add_val)
     {
         init();
         sgt.add(dfn[x], dfn[x] + siz[x] - 1, add_val);
