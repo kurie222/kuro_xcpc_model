@@ -106,11 +106,11 @@ struct modint {
 using mint=modint<998244353>;
 struct segment_tree_node_lazytag
 {
-    mint add=0;
+    long long add=0;
 };
 struct segment_tree_node
 {
-    mint val;
+    long long val;
     long long length;
     int l, r;
     long long min;
@@ -130,7 +130,7 @@ public:
         tree.resize(max_size * 4 + 10);
         build(1, max_size, vec);
     }
-    mint find_sum(int l, int r, int idx = 1)
+    long long find_sum(int l, int r, int idx = 1)
     {
         if (tree[idx].l > r || tree[idx].r < l)
             return 0;
@@ -302,10 +302,10 @@ public:
         }
         return dep[u] > dep[v] ? v : u;
     }
-    mint rangeQuery(int x, int y)
+    long long rangeQuery(int x, int y)
     {
         init();
-        mint ans = 0;
+        long long ans = 0;
         while (top[x] != top[y])
         { // 当两个点不在同一条链上
             if (dep[top[x]] < dep[top[y]])
@@ -319,7 +319,7 @@ public:
         ans += sgt.find_sum(dfn[x], dfn[y]); // 这时再加上此时两个点的区间和即可
         return ans ;
     }
-    mint sonQuery(int x)
+    long long sonQuery(int x)
     {
         init();
         return sgt.find_sum(dfn[x], dfn[x] + siz[x] - 1);
