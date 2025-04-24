@@ -1,4 +1,5 @@
 // hld传入真实大小！！！
+//注意：addedge只需要进行任意方向的一次，就会加两条边！！！
 template<class T>
 constexpr T qpow(T a, long long b) {
     T res = 1;
@@ -102,7 +103,7 @@ struct modint {
         return lhs.val() != rhs.val();
     }
 };
-using mint=modint<0>;
+using mint=modint<998244353>;
 struct segment_tree_node_lazytag
 {
     mint add=0;
