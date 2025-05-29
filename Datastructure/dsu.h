@@ -39,8 +39,8 @@ struct DSU
         }
         if (siz[x] > siz[y])
             std::swap(x, y);
-        siz[x] += siz[y];
-        f[y] = x;
+        f[x] = y;
+        siz[y] += siz[x];
         return true;
     }
 
