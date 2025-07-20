@@ -1,4 +1,4 @@
-struct Suffix_Automaton//注意！广义SAM需要在每次插入新串前将last置为1！！！
+struct Suffix_Automaton // 注意！广义SAM需要在每次插入新串前将last置为1！！！
 {
     static const int N = 2000005, MAXS = 30;
     int tot = 1, ru[N], link[N], maxlen[N], endpos[N], ch[N][MAXS], last = 1;
@@ -66,7 +66,16 @@ struct Suffix_Automaton//注意！广义SAM需要在每次插入新串前将last
             endpos[u] += endpos[v];
         }
     }
-
+    void clear()
+    {
+        for (int i = 1; i <= tot; i++)
+        {
+            ru[i] = link[i] = maxlen[i] =endpos[i]= 0;
+            for (int j = 0; j < MAXS; j++)
+                ch[i][j] = 0;
+        }
+        tot = last = 1;
+    }
     // 注意！在使用该方法前，endpos[]代表每个点作为“终结点”的次数
     // 使用该方法后，endpos[]指在串中出现总次数，即原数组的子树求和
     void get_endpos()
