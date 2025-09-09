@@ -1,0 +1,18 @@
+\usepackage[UTF8]{ctex}    % 自动选择系统中文字体
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Kuro XCPC Template}
+\rhead{\leftmark}
+\cfoot{\thepage}
+
+% 代码块设置（listings）
+\usepackage{listings}
+\lstset{
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  basicstyle=\ttfamily\small,
+  postbreak=\mbox{$\hookrightarrow$\space}
+}
